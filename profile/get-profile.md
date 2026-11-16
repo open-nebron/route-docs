@@ -1,6 +1,6 @@
 # Get Current Profile (`/me`)
 
-Retrieves the authenticated user's profile from the `zenuxs_core` database.
+Retrieves the authenticated user's profile and preferences from the `zenuxs_core` database, with media CDN URLs computed at read time.
 
 ---
 
@@ -40,9 +40,14 @@ Profile found and returned successfully.
   "username": "alex.smith",
   "name": "Alex Smith",
   "dateOfBirth": "1998-05-20",
-  "bio": "Software engineer building decentralized tools.",
-  "profilePicUrl": null,
-  "createdAt": "2026-11-16T22:30:00.000Z"
+  "about": "Distributed systems engineer building decentralized tools.",
+  "bio": "Building Zenuxs Core",
+  "language": "en",
+  "theme": "system",
+  "avatarUrl": "https://media.zenuxs.com/users/usr_9988776655/avatar/uuid-123.jpg?v=1763428800000",
+  "bannerUrl": null,
+  "createdAt": "2026-11-16T22:30:00.000Z",
+  "updatedAt": "2026-11-17T00:00:00.000Z"
 }
 ```
 
@@ -62,17 +67,8 @@ Missing, expired, untrusted signature, or invalid issuer/audience access token.
 }
 ```
 
-```json
-{
-  "error": {
-    "code": "invalid_token",
-    "message": "jwt expired"
-  }
-}
-```
-
 ### 404 Not Found (`profile_not_found`)
-Profile document does not exist in `zenuxs_core.profiles`. This indicates event consumer lag between registration on `auth-service` and profile creation on `core-api`.
+Profile document does not exist in `zenuxs_core.profiles`. Indicates event consumer lag between registration and profile creation.
 
 ```json
 {

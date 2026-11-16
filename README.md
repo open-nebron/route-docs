@@ -27,10 +27,17 @@ Port: `4002` | Base URL: `http://localhost:4002`
 
 | Route | Method | Title | Description | Documentation |
 |---|---|---|---|---|
-| `/me` | `GET` | [Get Current Profile](./profile/get-profile.md) | Retrieve authenticated user's profile | [get-profile.md](./profile/get-profile.md) |
-| `/me` | `PATCH` | [Update Profile](./profile/update-profile.md) | Update profile fields (`name`, `dateOfBirth`, `bio`) | [update-profile.md](./profile/update-profile.md) |
-| `/username/check` | `GET` | [Check Username Availability](./profile/check-username.md) | Public check for username availability (Rate limited 20/min per IP) | [check-username.md](./profile/check-username.md) |
+| `/meta` | `GET` | [Platform Metadata](./profile/meta.md) | Public metadata: supported languages, themes, limits | [meta.md](./profile/meta.md) |
+| `/username/check` | `GET` | [Check Username Availability](./profile/check-username.md) | Public check for username availability (20/min per IP) | [check-username.md](./profile/check-username.md) |
+| `/me` | `GET` | [Get Current Profile](./profile/get-profile.md) | Retrieve authenticated user profile with computed media URLs | [get-profile.md](./profile/get-profile.md) |
+| `/me` | `PATCH` | [Update Profile & Preferences](./profile/update-profile.md) | Update profile fields (`name`, `dateOfBirth`, `about`, `bio`, `language`, `theme`) | [update-profile.md](./profile/update-profile.md) |
 | `/me/username` | `PATCH` | [Claim Username](./profile/claim-username.md) | Claim or update username for authenticated user | [claim-username.md](./profile/claim-username.md) |
+| `/me/avatar/upload-url` | `POST` | [Avatar Upload Slot](./profile/media-upload-url.md) | Request presigned POST slot for direct avatar upload ($\le 5$ MB) | [media-upload-url.md](./profile/media-upload-url.md) |
+| `/me/avatar/confirm` | `POST` | [Confirm Avatar Upload](./profile/media-confirm.md) | Verify upload in R2, save avatarKey, delete previous avatar | [media-confirm.md](./profile/media-confirm.md) |
+| `/me/avatar` | `DELETE` | [Remove Avatar](./profile/media-delete.md) | Clear avatarKey and async delete file from storage | [media-delete.md](./profile/media-delete.md) |
+| `/me/banner/upload-url` | `POST` | [Banner Upload Slot](./profile/media-upload-url.md) | Request presigned POST slot for direct banner upload ($\le 10$ MB) | [media-upload-url.md](./profile/media-upload-url.md) |
+| `/me/banner/confirm` | `POST` | [Confirm Banner Upload](./profile/media-confirm.md) | Verify upload in R2, save bannerKey, delete previous banner | [media-confirm.md](./profile/media-confirm.md) |
+| `/me/banner` | `DELETE` | [Remove Banner](./profile/media-delete.md) | Clear bannerKey and async delete file from storage | [media-delete.md](./profile/media-delete.md) |
 | `/health` | `GET` | [Health Check](./profile/health.md) | MongoDB, Redis, and JWKS cache readiness probe | [health.md](./profile/health.md) |
 | `/internal/health` | `GET` | [Internal Health](./profile/internal-health.md) | JWKS cache age and debugging telemetry | [internal-health.md](./profile/internal-health.md) |
 | `/docs` | `GET` | [Swagger UI](./profile/docs.md) | Interactive OpenAPI 3.1 documentation | [docs.md](./profile/docs.md) |

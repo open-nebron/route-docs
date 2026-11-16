@@ -1,6 +1,6 @@
-# Update Profile (`/me`)
+# Update Profile & Preferences (`/me`)
 
-Updates one or more profile fields (`name`, `dateOfBirth`, `bio`) for the authenticated user.
+Updates one or more profile fields (`name`, `dateOfBirth`, `about`, `bio`, `language`, `theme`) for the authenticated user.
 
 ---
 
@@ -9,7 +9,7 @@ Updates one or more profile fields (`name`, `dateOfBirth`, `bio`) for the authen
 - **Method**: `PATCH`
 - **Path**: `/me`
 - **Authentication**: `Bearer <accessToken>` (RS256 JWT, audience must include `"core"`)
-- **Rate Limit**: Default Fastify threshold
+- **Rate Limit**: 30 requests per minute per user
 - **Service**: `core-api` (Port: `4002`)
 
 ---
@@ -23,20 +23,26 @@ Updates one or more profile fields (`name`, `dateOfBirth`, `bio`) for the authen
 | `Content-Type` | `application/json` | Yes | Request body format |
 
 ### Body Parameters
-All fields are optional, but **at least one field must be provided**.
+All fields are optional, but **at least one field must be provided**. Unknown fields are rejected (`.strict()`).
 
 | Field | Type | Constraints | Description |
 |---|---|---|---|
 | `name` | string | 1–80 chars | User's full or display name (control chars and newlines stripped) |
 | `dateOfBirth` | string | Format `YYYY-MM-DD` | ISO date string implying age $\ge 13$ years old |
-| `bio` | string | $\le 300$ chars | Short user bio/tagline (ASCII control characters stripped) |
+| `about` | string | $\le 2000$ chars, $\le 100$ newlines | Long about-me description. No HTML tags or null bytes allowed. |
+| `bio` | string | $\le 300$ chars | Short tagline/bio. No HTML tags or null bytes allowed. |
+| `language` | string | In `SUPPORTED_LANGUAGES` | BCP-47 lowercase language code (e.g. `en`, `hi`, `ta`, `te`, etc.) |
+| `theme` | string | `"light" \| "dark" \| "system"` | User UI theme preference |
 
 Example Body:
 ```json
 {
   "name": "Alexander Smith",
   "dateOfBirth": "1998-05-20",
-  "bio": "Distributed systems engineer."
+  "about": "Distributed systems engineer building high-throughput microservices.",
+  "bio": "Building Zenuxs Core",
+  "language": "hi",
+  "theme": "dark"
 }
 ```
 
@@ -45,7 +51,7 @@ Example Body:
 ## Response
 
 ### 200 OK
-Profile updated successfully.
+Profile updated successfully. Returns full profile shape with computed media URLs.
 
 ```json
 {
@@ -53,10 +59,14 @@ Profile updated successfully.
   "username": "alex.smith",
   "name": "Alexander Smith",
   "dateOfBirth": "1998-05-20",
-  "bio": "Distributed systems engineer.",
-  "profilePicUrl": null,
+  "about": "Distributed systems engineer building high-throughput microservices.",
+  "bio": "Building Zenuxs Core",
+  "language": "hi",
+  "theme": "dark",
+  "avatarUrl": "https://media.zenuxs.com/users/usr_9988776655/avatar/uuid-123.jpg?v=1763428900000",
+  "bannerUrl": null,
   "createdAt": "2026-11-16T22:30:00.000Z",
-  "updatedAt": "2026-11-16T23:15:00.000Z"
+  "updatedAt": "2026-11-17T00:15:00.000Z"
 }
 ```
 
@@ -65,13 +75,13 @@ Profile updated successfully.
 ## Error Responses
 
 ### 400 Bad Request (`validation_error`)
-Empty body, malformed date string, or date of birth implies age under 13.
+Empty body, HTML tags in about/bio, length exceeded, or unsupported language/theme.
 
 ```json
 {
   "error": {
     "code": "validation_error",
-    "message": "At least one field (name, dateOfBirth, bio) must be provided"
+    "message": "about: HTML tags are not allowed in about"
   }
 }
 ```
@@ -80,7 +90,7 @@ Empty body, malformed date string, or date of birth implies age under 13.
 {
   "error": {
     "code": "validation_error",
-    "message": "dateOfBirth: You must be at least 13 years old to use Zenuxs"
+    "message": "language: Unsupported language 'xx'. Supported languages: en, hi, ta, te, ml, kn, bn, mr, gu, pa, ur"
   }
 }
 ```
@@ -97,14 +107,14 @@ Missing or invalid Bearer access token.
 }
 ```
 
-### 404 Not Found (`profile_not_found`)
-The user profile document was not found.
+### 429 Too Many Requests (`rate_limit_exceeded`)
+Exceeded 30 requests per minute per user.
 
 ```json
 {
   "error": {
-    "code": "profile_not_found",
-    "message": "Profile not found"
+    "code": "rate_limit_exceeded",
+    "message": "Rate limit exceeded. Maximum 30 requests per minute."
   }
 }
 ```
@@ -118,8 +128,9 @@ curl -i -X PATCH http://localhost:4002/me \
   -H "Authorization: Bearer <ACCESS_TOKEN>" \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Alexander Smith",
-    "dateOfBirth": "1998-05-20",
-    "bio": "Distributed systems engineer."
+    "about": "Distributed systems engineer building high-throughput microservices.",
+    "bio": "Building Zenuxs Core",
+    "language": "hi",
+    "theme": "dark"
   }'
 ```
