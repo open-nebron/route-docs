@@ -1,6 +1,6 @@
 # Get Current Profile (`/me`)
 
-Retrieves the authenticated user's profile and preferences from the `zenuxs_core` database, with media CDN URLs computed at read time.
+Retrieves the authenticated user's profile and preferences from the `nebron_core` database, with media CDN URLs computed at read time.
 
 ---
 
@@ -68,7 +68,7 @@ Missing, expired, untrusted signature, or invalid issuer/audience access token.
 ```
 
 ### 404 Not Found (`profile_not_found`)
-Profile document does not exist in `zenuxs_core.profiles`. Indicates event consumer lag between registration and profile creation.
+Profile document does not exist in `nebron_core.profiles`. Indicates event consumer lag between registration and profile creation.
 
 ```json
 {

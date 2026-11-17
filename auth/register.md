@@ -1,6 +1,6 @@
 # Register User
 
-Registers a new user account with email and password in the `auth-service` database (`zenuxs_auth`).
+Registers a new user account with email and password in the `auth-service` database (`nebron_auth`).
 
 > [!NOTE]
 > This endpoint creates the user record and publishes an asynchronous domain event (`auth.user.registered`). It does **not** issue authentication tokens upon registration. The user must subsequently call `POST /auth/login` to obtain an access and refresh token pair.
