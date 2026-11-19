@@ -38,6 +38,12 @@ Port: `4002` | Base URL: `http://localhost:4002`
 | `/me/banner/upload-url` | `POST` | [Banner Upload Slot](./profile/media-upload-url.md) | Request presigned POST slot for direct banner upload ($\le 10$ MB) | [media-upload-url.md](./profile/media-upload-url.md) |
 | `/me/banner/confirm` | `POST` | [Confirm Banner Upload](./profile/media-confirm.md) | Verify upload in R2, save bannerKey, delete previous banner | [media-confirm.md](./profile/media-confirm.md) |
 | `/me/banner` | `DELETE` | [Remove Banner](./profile/media-delete.md) | Clear bannerKey and async delete file from storage | [media-delete.md](./profile/media-delete.md) |
+| `/relationships/:userId/block` | `POST` | [Block User](./relationships/block-user.md) | Block a user and emit event (30/min per user) | [block-user.md](./relationships/block-user.md) |
+| `/relationships/:userId/block` | `DELETE` | [Unblock User](./relationships/unblock-user.md) | Unblock a user and emit event (30/min per user) | [unblock-user.md](./relationships/unblock-user.md) |
+| `/relationships/:userId/mute` | `POST` | [Mute User](./relationships/mute-user.md) | Mute calls and/or messages from a user (30/min per user) | [mute-user.md](./relationships/mute-user.md) |
+| `/relationships/:userId/mute` | `DELETE` | [Unmute User](./relationships/unmute-user.md) | Clear all mute restrictions from a user (30/min per user) | [unmute-user.md](./relationships/unmute-user.md) |
+| `/relationships/:userId` | `GET` | [Get Relationship](./relationships/get-relationship.md) | Get block and mute status with a user (300/min per user) | [get-relationship.md](./relationships/get-relationship.md) |
+| `/relationships/check` | `GET` | [Batch Check Relationships](./relationships/check-relationships.md) | Internal batch check with token and cache header (600/min) | [check-relationships.md](./relationships/check-relationships.md) |
 | `/health` | `GET` | [Health Check](./profile/health.md) | MongoDB, Redis, and JWKS cache readiness probe | [health.md](./profile/health.md) |
 | `/internal/health` | `GET` | [Internal Health](./profile/internal-health.md) | JWKS cache age and debugging telemetry | [internal-health.md](./profile/internal-health.md) |
 | `/docs` | `GET` | [Swagger UI](./profile/docs.md) | Interactive OpenAPI 3.1 documentation | [docs.md](./profile/docs.md) |
