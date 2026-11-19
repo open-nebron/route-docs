@@ -40,7 +40,7 @@ Example Body:
   "name": "Alexander Smith",
   "dateOfBirth": "1998-05-20",
   "about": "Distributed systems engineer building high-throughput microservices.",
-  "bio": "Building Zenuxs Core",
+  "bio": "Building Nebron Core",
   "language": "hi",
   "theme": "dark"
 }
@@ -60,10 +60,10 @@ Profile updated successfully. Returns full profile shape with computed media URL
   "name": "Alexander Smith",
   "dateOfBirth": "1998-05-20",
   "about": "Distributed systems engineer building high-throughput microservices.",
-  "bio": "Building Zenuxs Core",
+  "bio": "Building Nebron Core",
   "language": "hi",
   "theme": "dark",
-  "avatarUrl": "https://media.zenuxs.com/users/usr_9988776655/avatar/uuid-123.jpg?v=1763428900000",
+  "avatarUrl": "https://media.nebron.com/users/usr_9988776655/avatar/uuid-123.jpg?v=1763428900000",
   "bannerUrl": null,
   "createdAt": "2026-11-16T22:30:00.000Z",
   "updatedAt": "2026-11-17T00:15:00.000Z"
@@ -129,7 +129,7 @@ curl -i -X PATCH http://localhost:4002/me \
   -H "Content-Type: application/json" \
   -d '{
     "about": "Distributed systems engineer building high-throughput microservices.",
-    "bio": "Building Zenuxs Core",
+    "bio": "Building Nebron Core",
     "language": "hi",
     "theme": "dark"
   }'

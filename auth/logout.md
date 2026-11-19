@@ -64,7 +64,7 @@ Refresh token was missing or empty in the request body.
 
 When an active session is revoked:
 
-- **Stream Key**: `zenuxs.events`
+- **Stream Key**: `nebron.events`
 - **Field `type`**: `auth.session.revoked`
 - **Field `payload`** (JSON string):
   ```json

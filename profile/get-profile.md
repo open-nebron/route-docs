@@ -41,10 +41,10 @@ Profile found and returned successfully.
   "name": "Alex Smith",
   "dateOfBirth": "1998-05-20",
   "about": "Distributed systems engineer building decentralized tools.",
-  "bio": "Building Zenuxs Core",
+  "bio": "Building Nebron Core",
   "language": "en",
   "theme": "system",
-  "avatarUrl": "https://media.zenuxs.com/users/usr_9988776655/avatar/uuid-123.jpg?v=1763428800000",
+  "avatarUrl": "https://media.nebron.com/users/usr_9988776655/avatar/uuid-123.jpg?v=1763428800000",
   "bannerUrl": null,
   "createdAt": "2026-11-16T22:30:00.000Z",
   "updatedAt": "2026-11-17T00:00:00.000Z"

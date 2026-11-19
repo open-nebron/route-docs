@@ -57,7 +57,7 @@ Media confirmed and profile updated.
 ```json
 {
   "key": "users/usr_9988776655/avatar/3f7a1b2c-4d5e-6f7a-8b9c-0d1e2f3a4b5c.png",
-  "url": "https://media.zenuxs.com/users/usr_9988776655/avatar/3f7a1b2c-4d5e-6f7a-8b9c-0d1e2f3a4b5c.png?v=1763429100000"
+  "url": "https://media.nebron.com/users/usr_9988776655/avatar/3f7a1b2c-4d5e-6f7a-8b9c-0d1e2f3a4b5c.png?v=1763429100000"
 }
 ```
 

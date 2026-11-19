@@ -47,12 +47,12 @@ Returns a presigned POST slot valid for 5 minutes with strict policy conditions 
 
 ```json
 {
-  "uploadUrl": "https://<account>.r2.cloudflarestorage.com/zenuxs-media",
+  "uploadUrl": "https://<account>.r2.cloudflarestorage.com/nebron-media",
   "fields": {
     "Content-Type": "image/png",
     "key": "users/usr_9988776655/avatar/3f7a1b2c-4d5e-6f7a-8b9c-0d1e2f3a4b5c.png",
     "success_action_status": "204",
-    "bucket": "zenuxs-media",
+    "bucket": "nebron-media",
     "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
     "X-Amz-Credential": "...",
     "X-Amz-Date": "20261117T000000Z",

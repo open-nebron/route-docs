@@ -33,7 +33,7 @@ Token verified successfully.
 ```json
 {
   "userId": "67389a0123456789abcdef01",
-  "email": "developer@zenuxs.com",
+  "email": "developer@nebron.com",
   "sessionId": "67389a0123456789abcdef02"
 }
 ```

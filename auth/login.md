@@ -33,7 +33,7 @@ Authenticates a user with email and password, creates a persistent session recor
 ### Example Request Body
 ```json
 {
-  "email": "developer@zenuxs.com",
+  "email": "developer@nebron.com",
   "password": "SecurePassword123!"
 }
 ```
@@ -61,7 +61,7 @@ Authentication successful. Returns access token, refresh token, and access token
     - `sub`: User ID (`userId`)
     - `email`: User email
     - `sid`: Session ID (`sessionId`)
-    - `iss`: `"zenuxs-auth"`
+    - `iss`: `"nebron-auth"`
     - `aud`: `["core", "chat", "voice"]`
 - **Refresh Token**:
   - Format: Opaque 32-byte cryptographically secure random string (64 hex characters)
@@ -119,7 +119,7 @@ Exceeded rate limits (either 10 attempts/min per IP or 5 attempts/min per email 
 curl -i -X POST http://localhost:4001/auth/login \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "developer@zenuxs.com",
+    "email": "developer@nebron.com",
     "password": "SecurePassword123!"
   }'
 ```

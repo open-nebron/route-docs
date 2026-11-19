@@ -74,7 +74,7 @@ const JWKS = jose.createRemoteJWKSet(
 
 export async function verifyAccessToken(token: string) {
   const { payload } = await jose.jwtVerify(token, JWKS, {
-    issuer: 'zenuxs-auth',
+    issuer: 'nebron-auth',
     audience: 'core', // or 'chat', 'voice'
     algorithms: ['RS256'],
   });

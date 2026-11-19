@@ -32,7 +32,7 @@ Registers a new user account with email and password in the `auth-service` datab
 ### Example Request Body
 ```json
 {
-  "email": "developer@zenuxs.com",
+  "email": "developer@nebron.com",
   "password": "SecurePassword123!"
 }
 ```
@@ -97,15 +97,15 @@ IP has exceeded the rate limit threshold of 5 registrations per hour.
 
 ## Asynchronous Events Published
 
-Publishes an event to the Redis Stream `zenuxs.events`:
+Publishes an event to the Redis Stream `nebron.events`:
 
-- **Stream Key**: `zenuxs.events`
+- **Stream Key**: `nebron.events`
 - **Field `type`**: `auth.user.registered`
 - **Field `payload`** (JSON string):
   ```json
   {
     "userId": "67389a0123456789abcdef01",
-    "email": "developer@zenuxs.com",
+    "email": "developer@nebron.com",
     "createdAt": "2026-11-17T00:00:00.000Z"
   }
   ```
@@ -118,7 +118,7 @@ Publishes an event to the Redis Stream `zenuxs.events`:
 curl -i -X POST http://localhost:4001/auth/register \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "developer@zenuxs.com",
+    "email": "developer@nebron.com",
     "password": "SecurePassword123!"
   }'
 ```

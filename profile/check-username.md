@@ -38,7 +38,7 @@ GET /username/check?username=neo_123
 3. **Prefix Constraint**: Must start with a letter (`^[a-z]`)
 4. **Suffix Constraint**: Must not end with `_` or `.`
 5. **No Consecutive Punctuation**: No `__`, `..`, `._`, `_.`, or `_._`
-6. **Reserved Words**: `admin, root, system, support, zenuxs, api, auth, chat, voice, me, null, undefined, help, about, settings, login, register`
+6. **Reserved Words**: `admin, root, system, support, nebron, api, auth, chat, voice, me, null, undefined, help, about, settings, login, register`
 7. **Profanity Filter**: Checked against the `bad-words` dictionary
 8. **Privacy / Enumeration Protection**: Never leaks whether a username belongs to a specific user; only reports overall availability.
 

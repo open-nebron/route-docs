@@ -119,7 +119,7 @@ IP has exceeded 30 refresh requests per minute.
 
 ## Asynchronous Events Published (Upon Reuse Detection)
 
-- **Stream Key**: `zenuxs.events`
+- **Stream Key**: `nebron.events`
 - **Field `type`**: `auth.session.revoked`
 - **Field `payload`** (JSON string):
   ```json
