@@ -61,5 +61,7 @@ Port: `4003` | Base URL: `http://localhost:4003`
 | `/conversations/:id/messages` | `POST` | [Send Message](./chat/send-message.md) | Post new message (1–4000 chars) and atomically update unread counts | [send-message.md](./chat/send-message.md) |
 | `/conversations/:id/read` | `POST` | [Mark Read](./chat/mark-read.md) | Update read receipt up to messageId and reset unread counter | [mark-read.md](./chat/mark-read.md) |
 | `/conversations/:id/messages/:messageId` | `DELETE` | [Soft-Delete Message](./chat/delete-message.md) | Soft-delete message (sender-only check) | [delete-message.md](./chat/delete-message.md) |
+| `/ws` | `GET` (WS) | [WebSocket Messaging Protocol](./chat/ws-protocol.md) | Bidirectional real-time messaging, typing indicators, and presence updates | [ws-protocol.md](./chat/ws-protocol.md) |
+| `/ws` (Errors) | `WS` | [WebSocket Close & Error Codes](./chat/ws-errors.md) | Specification of close codes (4401, 4403, 4408, 4409) and error frames | [ws-errors.md](./chat/ws-errors.md) |
 | `/health` | `GET` | [Health Check](./chat/health.md) | ScyllaDB, Redis, and JWKS cache readiness probe | [health.md](./chat/health.md) |
 | `/docs` | `GET` | [Swagger UI](./chat/docs.md) | Interactive OpenAPI 3.1 documentation | [docs.md](./chat/docs.md) |
