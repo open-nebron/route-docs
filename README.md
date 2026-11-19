@@ -1,6 +1,6 @@
 # route-docs
 
-API route documentation and endpoint specifications for the Zenuxs polyrepo ecosystem.
+API route documentation and endpoint specifications for the Nebron polyrepo ecosystem.
 
 ---
 
@@ -41,3 +41,19 @@ Port: `4002` | Base URL: `http://localhost:4002`
 | `/health` | `GET` | [Health Check](./profile/health.md) | MongoDB, Redis, and JWKS cache readiness probe | [health.md](./profile/health.md) |
 | `/internal/health` | `GET` | [Internal Health](./profile/internal-health.md) | JWKS cache age and debugging telemetry | [internal-health.md](./profile/internal-health.md) |
 | `/docs` | `GET` | [Swagger UI](./profile/docs.md) | Interactive OpenAPI 3.1 documentation | [docs.md](./profile/docs.md) |
+
+---
+
+### Chat Service (`chat-service`)
+Port: `4003` | Base URL: `http://localhost:4003`
+
+| Route | Method | Title | Description | Documentation |
+|---|---|---|---|---|
+| `/conversations` | `POST` | [Start Direct Conversation](./chat/start-conversation.md) | Compute deterministic UUIDv5 conversation and seed participant records | [start-conversation.md](./chat/start-conversation.md) |
+| `/conversations` | `GET` | [List Conversations](./chat/list-conversations.md) | Retrieve user conversations ordered DESC by last message timestamp with cursor | [list-conversations.md](./chat/list-conversations.md) |
+| `/conversations/:id/messages` | `GET` | [List Messages](./chat/list-messages.md) | Paginated messages in reverse chronological order via TimeUUID cursor | [list-messages.md](./chat/list-messages.md) |
+| `/conversations/:id/messages` | `POST` | [Send Message](./chat/send-message.md) | Post new message (1–4000 chars) and atomically update unread counts | [send-message.md](./chat/send-message.md) |
+| `/conversations/:id/read` | `POST` | [Mark Read](./chat/mark-read.md) | Update read receipt up to messageId and reset unread counter | [mark-read.md](./chat/mark-read.md) |
+| `/conversations/:id/messages/:messageId` | `DELETE` | [Soft-Delete Message](./chat/delete-message.md) | Soft-delete message (sender-only check) | [delete-message.md](./chat/delete-message.md) |
+| `/health` | `GET` | [Health Check](./chat/health.md) | ScyllaDB, Redis, and JWKS cache readiness probe | [health.md](./chat/health.md) |
+| `/docs` | `GET` | [Swagger UI](./chat/docs.md) | Interactive OpenAPI 3.1 documentation | [docs.md](./chat/docs.md) |
