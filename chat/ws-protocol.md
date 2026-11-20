@@ -274,6 +274,94 @@ Or when going offline:
 }
 ```
 
+> [!NOTE]
+> For group conversations, presence updates are broadcast only for groups with $\le 20$ members to prevent socket thrashing and fanout storm in large groups.
+
+---
+
+### 4.4 Dynamic Conversation & Group Events
+
+The Chat Service broadcasts dynamic membership and metadata updates. Connected client sockets automatically adjust their Redis Pub/Sub channel subscriptions upon receipt of these events.
+
+#### `conversation.created`
+Pushed to `ws:user:{memberId}` when a user is included as an initial member of a newly created group conversation. The recipient's active sockets automatically subscribe to `ws:conv:{conversationId}`.
+
+```json
+{
+  "type": "conversation.created",
+  "payload": {
+    "conversationId": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+    "kind": "group",
+    "name": "Backend Team",
+    "ownerId": "11111111-1111-4111-8111-111111111111",
+    "memberCount": 3,
+    "createdAt": "2026-11-20T19:00:00.000Z"
+  }
+}
+```
+
+#### `conversation.member_added`
+Pushed to `ws:conv:{conversationId}` and to each added user's `ws:user:{userId}` channel. Added users' active sockets automatically subscribe to `ws:conv:{conversationId}`.
+
+```json
+{
+  "type": "conversation.member_added",
+  "payload": {
+    "conversationId": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+    "addedBy": "11111111-1111-4111-8111-111111111111",
+    "userIds": [
+      "44444444-4444-4444-8444-444444444444"
+    ],
+    "at": "2026-11-20T19:05:00.000Z"
+  }
+}
+```
+
+#### `conversation.member_removed`
+Pushed to `ws:conv:{conversationId}` and to the removed/departed user's `ws:user:{userId}` channel. The removed user's active sockets automatically unsubscribe from `ws:conv:{conversationId}`.
+
+```json
+{
+  "type": "conversation.member_removed",
+  "payload": {
+    "conversationId": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+    "removedBy": "11111111-1111-4111-8111-111111111111",
+    "userId": "44444444-4444-4444-8444-444444444444",
+    "at": "2026-11-20T19:10:00.000Z",
+    "newOwnerId": "22222222-2222-4222-8222-222222222222"
+  }
+}
+```
+*(Note: `newOwnerId` is included when the group owner leaves and ownership transfers to the earliest joined remaining member).*
+
+#### `conversation.renamed`
+Pushed to `ws:conv:{conversationId}` when the group owner updates the group display name.
+
+```json
+{
+  "type": "conversation.renamed",
+  "payload": {
+    "conversationId": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+    "renamedBy": "11111111-1111-4111-8111-111111111111",
+    "newName": "Platform Engineering",
+    "name": "Platform Engineering",
+    "at": "2026-11-20T19:15:00.000Z"
+  }
+}
+```
+
+#### `conversation.removed`
+Pushed to `ws:user:{userId}` for a member when a conversation is completely deleted. Connected sockets automatically unsubscribe from `ws:conv:{conversationId}`.
+
+```json
+{
+  "type": "conversation.removed",
+  "payload": {
+    "conversationId": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d"
+  }
+}
+```
+
 ---
 
 ## 5. Error Frames
