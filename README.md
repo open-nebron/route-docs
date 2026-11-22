@@ -13,8 +13,11 @@ Port: `4001` | Base URL: `http://localhost:4001`
 |---|---|---|---|---|
 | `/auth/register` | `POST` | [Register User](./auth/register.md) | Create user account with email & password | [register.md](./auth/register.md) |
 | `/auth/login` | `POST` | [User Login](./auth/login.md) | Authenticate user & issue RS256 access + refresh tokens | [login.md](./auth/login.md) |
-| `/auth/refresh` | `POST` | [Refresh Access Token](./auth/refresh.md) | Rotate refresh token with reuse detection | [refresh.md](./auth/refresh.md) |
-| `/auth/logout` | `POST` | [User Logout](./auth/logout.md) | Invalidate refresh token session (idempotent) | [logout.md](./auth/logout.md) |
+| `/auth/login/cookie` | `POST` | [User Login (Cookie)](./auth/login-cookie.md) | Authenticate web client & set HttpOnly refresh token cookie | [login-cookie.md](./auth/login-cookie.md) |
+| `/auth/refresh` | `POST` | [Refresh Access Token](./auth/refresh.md) | Rotate refresh token with reuse detection (body-based) | [refresh.md](./auth/refresh.md) |
+| `/auth/refresh/cookie` | `POST` | [Refresh Access Token (Cookie)](./auth/refresh-cookie.md) | Rotate HttpOnly cookie refresh token with reuse detection | [refresh-cookie.md](./auth/refresh-cookie.md) |
+| `/auth/logout` | `POST` | [User Logout](./auth/logout.md) | Invalidate refresh token session (body-based) | [logout.md](./auth/logout.md) |
+| `/auth/logout/cookie` | `POST` | [User Logout (Cookie)](./auth/logout-cookie.md) | Invalidate session and clear HttpOnly cookie | [logout-cookie.md](./auth/logout-cookie.md) |
 | `/auth/me` | `GET` | [Current User Identity](./auth/me.md) | Verify Bearer access token and retrieve claims | [me.md](./auth/me.md) |
 | `/.well-known/jwks.json` | `GET` | [JSON Web Key Set](./auth/jwks.md) | Public RSA keys for token verifiers | [jwks.md](./auth/jwks.md) |
 | `/health` | `GET` | [Health Check](./auth/health.md) | MongoDB & Redis connectivity probe | [health.md](./auth/health.md) |
