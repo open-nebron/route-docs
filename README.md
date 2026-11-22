@@ -65,3 +65,27 @@ Port: `4003` | Base URL: `http://localhost:4003`
 | `/ws` (Errors) | `WS` | [WebSocket Close & Error Codes](./chat/ws-errors.md) | Specification of close codes (4401, 4403, 4408, 4409) and error frames | [ws-errors.md](./chat/ws-errors.md) |
 | `/health` | `GET` | [Health Check](./chat/health.md) | ScyllaDB, Redis, and JWKS cache readiness probe | [health.md](./chat/health.md) |
 | `/docs` | `GET` | [Swagger UI](./chat/docs.md) | Interactive OpenAPI 3.1 documentation | [docs.md](./chat/docs.md) |
+
+---
+
+### Voice Service (`voice-service`)
+Port: `4004` | Base URL: `http://localhost:4004`
+
+| Route | Method | Title | Description | Documentation |
+|---|---|---|---|---|
+| `/calls` | `POST` | [Initiate Call](./voice/call-start.md) | Start 1:1 call, check block/mute, push signaling events | [call-start.md](./voice/call-start.md) |
+| `/calls/:id/accept` | `POST` | [Accept Call](./voice/call-accept.md) | Accept ringing call, mint LiveKit tokens for both parties | [call-accept.md](./voice/call-accept.md) |
+| `/calls/:id/reject` | `POST` | [Reject Call](./voice/call-reject.md) | Reject ringing call with reason code (callee only) | [call-reject.md](./voice/call-reject.md) |
+| `/calls/:id/end` | `POST` | [End / Cancel Call](./voice/call-end.md) | Terminate active call or cancel outbound ringing call | [call-end.md](./voice/call-end.md) |
+| `/calls/active` | `GET` | [Get Active Call](./voice/call-active.md) | Retrieve current active ringing/accepted call or 204 | [call-active.md](./voice/call-active.md) |
+| `/calls/:id` | `GET` | [Get Call Details](./voice/call-get.md) | Fetch call metadata and peer status (participant only) | [call-get.md](./voice/call-get.md) |
+| `/calls/:id/tokens` | `POST` | [Refresh Tokens](./voice/call-tokens.md) | Mint fresh LiveKit token for reconnects during accepted call | [call-tokens.md](./voice/call-tokens.md) |
+| `/calls` | `GET` | [List Call History](./voice/call-history.md) | Paginated past call history for user ordered DESC | [call-history.md](./voice/call-history.md) |
+| `/webhooks/livekit` | `POST` | [LiveKit Webhooks](./voice/webhooks-livekit.md) | Ingest LiveKit server events (`room_finished`, `participant_left`) and auto-end calls | [webhooks-livekit.md](./voice/webhooks-livekit.md) |
+| `/calls/:id/debug` | `GET` | [Call Diagnostic Debug](./voice/call-debug.md) | Internal inspection comparing ScyllaDB and LiveKit room states for divergence | [call-debug.md](./voice/call-debug.md) |
+| `CallReconcileJob` | `Job` | [Call Reconciliation](./voice/call-reconcile.md) | Background self-healing job auto-ending stuck calls using Scylla LWT | [call-reconcile.md](./voice/call-reconcile.md) |
+| `ws:signal:{userId}` | `Pub/Sub` | [Voice Signaling Protocol](./voice/ws-signal.md) | Specification of Redis pub/sub push frames and chat-service forwarder | [ws-signal.md](./voice/ws-signal.md) |
+| Call Lifecycle | `Guide` | [End-to-End Call Lifecycle](./voice/call-flow.md) | State machine transitions, sequence diagram, and timeout sweeps | [call-flow.md](./voice/call-flow.md) |
+| `/health` | `GET` | System Health | Scylla, Redis, JWKS, and LiveKit readiness check | OpenAPI |
+| `/docs` | `GET` | Swagger UI | Interactive OpenAPI 3.1 documentation | OpenAPI |
+
