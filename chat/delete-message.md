@@ -39,6 +39,7 @@ None.
 3. **Message Existence**: Confirms message exists in ScyllaDB `messages` table for `(conversation_id = id AND message_id = messageId)`.
 4. **Ownership Verification**: Enforces that `message.senderId === req.user.userId`. If a user attempts to delete another user's message, rejects with HTTP 403 `not_message_owner`.
 5. **Soft-Delete Flag**: Updates `deleted = true` in `messages`. Message content and audit metadata remain persisted in ScyllaDB for compliance and tombstones.
+6. **Real-time Event Broadcast**: Publishes `message.deleted` to Redis channel `ws:conv:{id}` and `ws:user:{memberId}` so all connected clients instantly update their message lists and conversation previews without refreshing.
 
 ---
 

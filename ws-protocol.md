@@ -240,7 +240,21 @@ Pushed to recipient sockets when a message arrives.
 }
 ```
 
-### 4.2 `typing.update`
+### 4.2 `message.deleted`
+Pushed to `ws:conv:{conversationId}` and `ws:user:{memberId}` when a message is soft-deleted by its author.
+
+```json
+{
+  "type": "message.deleted",
+  "payload": {
+    "conversationId": "e4f8a61b-90a3-5c24-9b2f-7848df74f07a",
+    "messageId": "be15a7f0-e35d-11f1-abbd-a1b88e74a509",
+    "deletedBy": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
+  }
+}
+```
+
+### 4.3 `typing.update`
 Pushed to recipient sockets when a peer starts or stops typing.
 
 ```json
