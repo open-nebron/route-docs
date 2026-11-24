@@ -1,6 +1,6 @@
 # Update Profile & Preferences (`/me`)
 
-Updates one or more profile fields (`name`, `dateOfBirth`, `about`, `bio`, `language`, `theme`) for the authenticated user.
+Updates one or more profile fields (`name`, `dateOfBirth`, `about`, `bio`, `language`, `theme`, `messageRequestPolicy`) for the authenticated user.
 
 ---
 
@@ -33,6 +33,7 @@ All fields are optional, but **at least one field must be provided**. Unknown fi
 | `bio` | string | $\le 300$ chars | Short tagline/bio. No HTML tags or null bytes allowed. |
 | `language` | string | In `SUPPORTED_LANGUAGES` | BCP-47 lowercase language code (e.g. `en`, `hi`, `ta`, `te`, etc.) |
 | `theme` | string | `"light" \| "dark" \| "system"` | User UI theme preference |
+| `messageRequestPolicy` | string | `"everyone" \| "known" \| "nobody"` | Message request policy (default: `"known"`) |
 
 Example Body:
 ```json
@@ -42,7 +43,8 @@ Example Body:
   "about": "Distributed systems engineer building high-throughput microservices.",
   "bio": "Building Nebron Core",
   "language": "hi",
-  "theme": "dark"
+  "theme": "dark",
+  "messageRequestPolicy": "known"
 }
 ```
 
@@ -63,6 +65,7 @@ Profile updated successfully. Returns full profile shape with computed media URL
   "bio": "Building Nebron Core",
   "language": "hi",
   "theme": "dark",
+  "messageRequestPolicy": "known",
   "avatarUrl": "https://media.nebron.com/users/usr_9988776655/avatar/uuid-123.jpg?v=1763428900000",
   "bannerUrl": null,
   "createdAt": "2026-11-16T22:30:00.000Z",

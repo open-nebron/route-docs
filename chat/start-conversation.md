@@ -59,7 +59,8 @@ Conversation created or retrieved successfully.
     "id": "e2f7b8a0-1234-5678-9abc-def012345678",
     "kind": "direct",
     "createdAt": "2026-11-19T14:30:00.000Z",
-    "peerUserId": "22222222-2222-4222-8222-222222222222"
+    "peerUserId": "22222222-2222-4222-8222-222222222222",
+    "request_state": "active"
   }
 }
 ```

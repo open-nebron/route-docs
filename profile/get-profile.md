@@ -44,6 +44,7 @@ Profile found and returned successfully.
   "bio": "Building Nebron Core",
   "language": "en",
   "theme": "system",
+  "messageRequestPolicy": "known",
   "avatarUrl": "https://media.nebron.com/users/usr_9988776655/avatar/uuid-123.jpg?v=1763428800000",
   "bannerUrl": null,
   "createdAt": "2026-11-16T22:30:00.000Z",
