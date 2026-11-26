@@ -66,6 +66,7 @@ Port: `4003` | Base URL: `http://localhost:4003`
 | `/conversations/:id/messages/:messageId` | `DELETE` | [Soft-Delete Message](./chat/delete-message.md) | Soft-delete message (sender-only check) | [delete-message.md](./chat/delete-message.md) |
 | `/ws` | `GET` (WS) | [WebSocket Messaging Protocol](./chat/ws-protocol.md) | Bidirectional real-time messaging, typing indicators, and presence updates | [ws-protocol.md](./chat/ws-protocol.md) |
 | `/ws` (Errors) | `WS` | [WebSocket Close & Error Codes](./chat/ws-errors.md) | Specification of close codes (4401, 4403, 4408, 4409) and error frames | [ws-errors.md](./chat/ws-errors.md) |
+| `/internal/channels` | `POST` | [Internal Provision Space Channel](./chat/internal-channels.md) | Idempotent `kind='channel'` conversation provisioning for Space text channels (`INTERNAL_TOKEN`) | [internal-channels.md](./chat/internal-channels.md) |
 | `/health` | `GET` | [Health Check](./chat/health.md) | ScyllaDB, Redis, and JWKS cache readiness probe | [health.md](./chat/health.md) |
 | `/docs` | `GET` | [Swagger UI](./chat/docs.md) | Interactive OpenAPI 3.1 documentation | [docs.md](./chat/docs.md) |
 
@@ -87,8 +88,50 @@ Port: `4004` | Base URL: `http://localhost:4004`
 | `/webhooks/livekit` | `POST` | [LiveKit Webhooks](./voice/webhooks-livekit.md) | Ingest LiveKit server events (`room_finished`, `participant_left`) and auto-end calls | [webhooks-livekit.md](./voice/webhooks-livekit.md) |
 | `/calls/:id/debug` | `GET` | [Call Diagnostic Debug](./voice/call-debug.md) | Internal inspection comparing ScyllaDB and LiveKit room states for divergence | [call-debug.md](./voice/call-debug.md) |
 | `CallReconcileJob` | `Job` | [Call Reconciliation](./voice/call-reconcile.md) | Background self-healing job auto-ending stuck calls using Scylla LWT | [call-reconcile.md](./voice/call-reconcile.md) |
+| `/internal/spaces/:spaceId/channels/:chId/join` | `POST` | [Internal Space Voice Join](./voice/spaces-voice-join.md) | Verify space voice channel permissions and issue LiveKit token (`INTERNAL_TOKEN`) | [spaces-voice-join.md](./voice/spaces-voice-join.md) |
 | `ws:signal:{userId}` | `Pub/Sub` | [Voice Signaling Protocol](./voice/ws-signal.md) | Specification of Redis pub/sub push frames and chat-service forwarder | [ws-signal.md](./voice/ws-signal.md) |
 | Call Lifecycle | `Guide` | [End-to-End Call Lifecycle](./voice/call-flow.md) | State machine transitions, sequence diagram, and timeout sweeps | [call-flow.md](./voice/call-flow.md) |
 | `/health` | `GET` | System Health | Scylla, Redis, JWKS, and LiveKit readiness check | OpenAPI |
 | `/docs` | `GET` | Swagger UI | Interactive OpenAPI 3.1 documentation | OpenAPI |
+
+---
+
+### Spaces Service (`spaces-service`)
+Port: `4005` | Base URL: `http://localhost:4005`
+
+| Route | Method | Title | Description | Documentation |
+|---|---|---|---|---|
+| `/spaces` | `POST` | [Create Space](./spaces/spaces.md) | Create space, `@everyone` role, default categories, `#general` text & `General` voice channels | [spaces.md](./spaces/spaces.md) |
+| `/spaces` | `GET` | [List Spaces](./spaces/spaces.md) | List all spaces where caller is a member | [spaces.md](./spaces/spaces.md) |
+| `/spaces/:id` | `GET` | [Get Space Detail](./spaces/spaces.md) | Fetch space metadata, visible channels, categories, roles, and `myPermissions` | [spaces.md](./spaces/spaces.md) |
+| `/spaces/:id` | `PATCH` | [Edit Space](./spaces/spaces.md) | Update space name, description, `iconKey`, `bannerKey` (`MANAGE_SPACE`) | [spaces.md](./spaces/spaces.md) |
+| `/spaces/:id` | `DELETE` | [Delete Space](./spaces/spaces.md) | Owner-only cascading deletion of space and all child collections | [spaces.md](./spaces/spaces.md) |
+| `/spaces/:id/invites` | `POST` | [Create Invite](./spaces/invites-and-members.md) | Generate invite code with optional `maxUses` and `expiresInHours` (`CREATE_INVITES`) | [invites-and-members.md](./spaces/invites-and-members.md) |
+| `/spaces/:id/invites` | `GET` | [List Invites](./spaces/invites-and-members.md) | List invites and usage stats (`MANAGE_SPACE`) | [invites-and-members.md](./spaces/invites-and-members.md) |
+| `/spaces/:id/invites/:code` | `DELETE` | [Revoke Invite](./spaces/invites-and-members.md) | Revoke invite code (`CREATE_INVITES`) | [invites-and-members.md](./spaces/invites-and-members.md) |
+| `/spaces/join/:code` | `POST` | [Join via Invite](./spaces/invites-and-members.md) | Idempotent invite join enforcing ban, expiry, revocation, and `maxUses` | [invites-and-members.md](./spaces/invites-and-members.md) |
+| `/spaces/:id/members` | `GET` | [List Members](./spaces/invites-and-members.md) | Cursor-paginated member list (`limit`, `before`) | [invites-and-members.md](./spaces/invites-and-members.md) |
+| `/spaces/:id/members/:userId` | `DELETE` | [Kick / Leave Space](./spaces/invites-and-members.md) | Self-leave or kick member enforcing `KICK_MEMBERS` and role hierarchy | [invites-and-members.md](./spaces/invites-and-members.md) |
+| `/spaces/:id/bans` | `POST` | [Ban Member](./spaces/invites-and-members.md) | Ban member, remove membership, block re-join (`BAN_MEMBERS`) | [invites-and-members.md](./spaces/invites-and-members.md) |
+| `/spaces/:id/bans` | `GET` | [List Bans](./spaces/invites-and-members.md) | List active bans in space (`BAN_MEMBERS`) | [invites-and-members.md](./spaces/invites-and-members.md) |
+| `/spaces/:id/bans/:userId` | `DELETE` | [Unban Member](./spaces/invites-and-members.md) | Remove space ban (`BAN_MEMBERS`) | [invites-and-members.md](./spaces/invites-and-members.md) |
+| `/spaces/:id/roles` | `GET` | [List Roles](./spaces/roles-and-permissions.md) | List roles ordered by position DESC | [roles-and-permissions.md](./spaces/roles-and-permissions.md) |
+| `/spaces/:id/roles` | `POST` | [Create Role](./spaces/roles-and-permissions.md) | Create custom role (`MANAGE_ROLES`, enforces hierarchy) | [roles-and-permissions.md](./spaces/roles-and-permissions.md) |
+| `/spaces/:id/roles/:roleId` | `PATCH` | [Edit Role](./spaces/roles-and-permissions.md) | Update role name, color, permissions, position (`MANAGE_ROLES`) | [roles-and-permissions.md](./spaces/roles-and-permissions.md) |
+| `/spaces/:id/roles/:roleId` | `DELETE` | [Delete Role](./spaces/roles-and-permissions.md) | Delete custom role (forbids `@everyone`) | [roles-and-permissions.md](./spaces/roles-and-permissions.md) |
+| `/spaces/:id/members/:userId/roles` | `PUT` | [Assign Member Roles](./spaces/roles-and-permissions.md) | Replace member role set (`MANAGE_ROLES` + hierarchy) | [roles-and-permissions.md](./spaces/roles-and-permissions.md) |
+| `/spaces/:id/permissions/:userId` | `GET` | [Resolve Space Permissions](./spaces/roles-and-permissions.md) | Evaluate bitmask permissions (`INTERNAL_TOKEN` or space member) | [roles-and-permissions.md](./spaces/roles-and-permissions.md) |
+| `/spaces/:id/channels/:chId/permissions/:userId` | `GET` | [Resolve Channel Permissions](./spaces/roles-and-permissions.md) | Evaluate bitmask permissions with channel overrides (`INTERNAL_TOKEN` or space member) | [roles-and-permissions.md](./spaces/roles-and-permissions.md) |
+| `/spaces/:id/categories` | `POST` | [Create Category](./spaces/channels-and-categories.md) | Create channel category (`MANAGE_CHANNELS`) | [channels-and-categories.md](./spaces/channels-and-categories.md) |
+| `/spaces/:id/categories/:catId` | `PATCH` | [Edit Category](./spaces/channels-and-categories.md) | Rename or reposition category (`MANAGE_CHANNELS`) | [channels-and-categories.md](./spaces/channels-and-categories.md) |
+| `/spaces/:id/categories/:catId` | `DELETE` | [Delete Category](./spaces/channels-and-categories.md) | Delete category and unlink child channels (`MANAGE_CHANNELS`) | [channels-and-categories.md](./spaces/channels-and-categories.md) |
+| `/spaces/:id/channels` | `GET` | [List Channels](./spaces/channels-and-categories.md) | List space channels filtered by `VIEW_CHANNEL` | [channels-and-categories.md](./spaces/channels-and-categories.md) |
+| `/spaces/:id/channels` | `POST` | [Create Channel](./spaces/channels-and-categories.md) | Create text/voice channel (`MANAGE_CHANNELS`, provisions chat channel for text) | [channels-and-categories.md](./spaces/channels-and-categories.md) |
+| `/spaces/:id/channels/:chId` | `PATCH` | [Edit Channel](./spaces/channels-and-categories.md) | Update channel metadata or `permissionOverrides` | [channels-and-categories.md](./spaces/channels-and-categories.md) |
+| `/spaces/:id/channels/:chId` | `DELETE` | [Delete Channel](./spaces/channels-and-categories.md) | Delete channel (`MANAGE_CHANNELS`) | [channels-and-categories.md](./spaces/channels-and-categories.md) |
+| `/spaces/:id/channels/:chId/voice/join` | `POST` | [Join Voice Channel](./spaces/channels-and-categories.md) | Check `CONNECT` and obtain LiveKit token via `voice-service` | [channels-and-categories.md](./spaces/channels-and-categories.md) |
+| `/health` | `GET` | [Health Check](./spaces/health-and-metrics.md) | MongoDB, Redis, and JWKS readiness probe | [health-and-metrics.md](./spaces/health-and-metrics.md) |
+| `/internal/health` | `GET` | [Internal Health](./spaces/health-and-metrics.md) | JWKS cache telemetry | [health-and-metrics.md](./spaces/health-and-metrics.md) |
+| `/metrics` | `GET` | [Metrics](./spaces/health-and-metrics.md) | Prometheus text exposition placeholder | [health-and-metrics.md](./spaces/health-and-metrics.md) |
+| `/docs` | `GET` | [Swagger UI](./spaces/health-and-metrics.md) | Interactive OpenAPI 3.1 documentation | [health-and-metrics.md](./spaces/health-and-metrics.md) |
 
